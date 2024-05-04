@@ -77,13 +77,21 @@ public class Graph {
         }
     }
 
-    public boolean Bellman_Ford (int src, int[] cost, int[] parents) {
+    public boolean BellmanFord (int src, int[] cost, int[] parents) {
         return false;
 
     }
 
-    public boolean Floyd_Warshall (int[][] cost, int[][] parents) {
-        return false;
+    public boolean FloydWarshall (int[][] cost, int[][] parents) {
+
+
+
+
+        // check -ve cycles
+        for(int i = 0 ; i < graph.size() ; i++){
+			if(cost[i][i] < 0 ) return false;
+		}
+		return true ;
 
     }
 
@@ -107,12 +115,6 @@ public class Graph {
         int[] cost = new int[g.Size()];
         int[] parents = new int[g.Size()];
         g.Dijkstra (0, cost, parents);    // One Source to All Nodes
-
-        List<int[]> AllCost = new ArrayList<>();
-        List<int[]> AllParents = new ArrayList<>();
-        AllShortestPaths p = new AllShortestPaths();
-        p.Dijkstra_All_Paths(g, AllCost, AllParents);  // All Sources to All Nodes
-
         // You should print the full path from the source to the desired destination and 
         // not only the node used to reach that destination.
 
