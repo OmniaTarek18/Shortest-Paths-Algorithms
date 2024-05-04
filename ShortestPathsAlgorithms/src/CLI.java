@@ -74,7 +74,6 @@ public class CLI {
 				graph.Dijkstra(src, cost, parents);
 			else if (algOption == 2)
 				graph.BellmanFord(src, cost, parents);
-				System.out.println(Arrays.toString(cost));
 
 			subMenu(src, cost, parents);
 		} else {
@@ -192,7 +191,6 @@ public class CLI {
 	}
 
 	static void getCost(int src, int dest, int[] cost) {
-		System.out.println(Arrays.toString(cost)+"  "+cost[2]);
 		System.out.println("The cost of the path from node " + src + " to node " + dest + " = " + cost[dest]);
 	}
 
