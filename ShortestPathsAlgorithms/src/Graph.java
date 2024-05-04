@@ -6,11 +6,11 @@ import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Graph {
-    
-    private int n;                        // Number of vertices
-    private List<List<int[]>> graph;      // Adjacency List, the neighbors are stored as {vertex, weight}
 
-    public Graph (String filePath) {
+    private int n; // Number of vertices
+    private List<List<int[]>> graph; // Adjacency List, the neighbors are stored as {vertex, weight}
+
+    public Graph(String filePath) {
         // NOTE: I didn't check on repeated edges.
         File file = new File(filePath);
         if (!file.exists()) {
@@ -22,15 +22,15 @@ public class Graph {
             n = sc.nextInt();
             graph = new ArrayList<>();
 
-            for (int i=0; i<n; i++) {
+            for (int i = 0; i < n; i++) {
                 graph.add(new ArrayList<>());
             }
 
             int edges = sc.nextInt();
 
-            for (int i=0; i<edges; i++) {
+            for (int i = 0; i < edges; i++) {
                 int src = sc.nextInt();
-                int[] edge = {sc.nextInt(), sc.nextInt()};
+                int[] edge = { sc.nextInt(), sc.nextInt() };
                 List<int[]> from = graph.get(src);
                 from.add(edge);
             }
@@ -47,29 +47,32 @@ public class Graph {
         return this.n;
     }
 
-    public void Dijkstra (int src, int[] cost, int[] parents) {
+    public void Dijkstra(int src, int[] cost, int[] parents) {
         boolean[] sure = new boolean[this.n];
         PriorityQueue<int[]> pq = new PriorityQueue<>(new WeightComparator());
 
         Arrays.fill(cost, Integer.MAX_VALUE);
 
-        int[] base = {src, 0, 0};     // {destination node, cost, parent}
+        int[] base = { src, 0, 0 }; // {destination node, cost, parent}
         pq.add(base);
         cost[src] = 0;
         parents[src] = src;
 
         while (!pq.isEmpty()) {
             int[] min = pq.poll();
-            sure[min[0]] = true;                         // Make the node with the least cost sure
-            for (int[] neighbor : graph.get(min[0])) {   // Loop on the neighbors of the least cost node
+            sure[min[0]] = true; // Make the node with the least cost sure
+            for (int[] neighbor : graph.get(min[0])) { // Loop on the neighbors of the least cost node
 
-                // Check if the neighbor of the least cost node is unsure and then compare its current cost and the
-                // new cost if taken the cost of the least cost node added to the weight of the edge between them.
-                // If the current cost is bigger, then update the cost of the node with the new cost and update the parent of it.
+                // Check if the neighbor of the least cost node is unsure and then compare its
+                // current cost and the
+                // new cost if taken the cost of the least cost node added to the weight of the
+                // edge between them.
+                // If the current cost is bigger, then update the cost of the node with the new
+                // cost and update the parent of it.
                 if (!sure[neighbor[0]] && cost[min[0]] + neighbor[1] < cost[neighbor[0]]) {
                     cost[neighbor[0]] = cost[min[0]] + neighbor[1];
                     parents[neighbor[0]] = min[0];
-                    int[] entry = {neighbor[0], cost[neighbor[0]], parents[neighbor[0]]};
+                    int[] entry = { neighbor[0], cost[neighbor[0]], parents[neighbor[0]] };
                     // Adding the node updated to the priority queue.
                     pq.add(entry);
                 }
@@ -77,27 +80,53 @@ public class Graph {
         }
     }
 
-    public boolean BellmanFord (int src, int[] cost, int[] parents) {
-        return false;
+    public boolean BellmanFord(int src, int[] cost, int[] parents) {
+        Arrays.fill(cost, Integer.MAX_VALUE);
+        cost[src] = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (cost[j] == Integer.MAX_VALUE)
+                    continue;
+                for (int[] edge : graph.get(j)) {
+                    if (cost[edge[0]] > cost[j] + edge[1]) {
+                        parents[edge[0]] = j;
+                        cost[edge[0]] = cost[j] + edge[1];
+                    }
+                }
+            }
+        }
+        // check negative cycles
+        for (int j = 0; j < n; j++) {
+
+            if (cost[j] == Integer.MAX_VALUE)
+                continue;
+            for (int[] edge : graph.get(j)) {
+                if (cost[edge[0]] > cost[j] + edge[1]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
 
     }
 
-    public boolean FloydWarshall (int[][] cost, int[][] parents) {
-
-
-
+    public boolean FloydWarshall(int[][] cost, int[][] parents) {
 
         // check -ve cycles
-        for(int i = 0 ; i < graph.size() ; i++){
-			if(cost[i][i] < 0 ) return false;
-		}
-		return true ;
+        for (int i = 0; i < graph.size(); i++) {
+            if (cost[i][i] < 0)
+                return false;
+        }
+        return true;
 
     }
 
     // NOTE: The main function is used only for testing what I coded.
-    // Feel free to delete and create a new class to create the menu and put the main in it.
-    public static void main (String[] argv) {
+    // Feel free to delete and create a new class to create the menu and put the
+    // main in it.
+    public static void main(String[] argv) {
 
         Scanner sc = new Scanner(System.in);
         System.out.print("\nPlease enter the file path: ");
@@ -110,12 +139,14 @@ public class Graph {
         Graph g = new Graph(filePath);
 
         // That's a sample of how dijkstra code runs.
-        // NOTE: If the cost = Integer.MAX_VALUE, then this means that this node can't be accessed.
-        // NOTE: If the source and destination nodes are the same, then the parent node equals any of them.
+        // NOTE: If the cost = Integer.MAX_VALUE, then this means that this node can't
+        // be accessed.
+        // NOTE: If the source and destination nodes are the same, then the parent node
+        // equals any of them.
         int[] cost = new int[g.Size()];
         int[] parents = new int[g.Size()];
-        g.Dijkstra (0, cost, parents);    // One Source to All Nodes
-        // You should print the full path from the source to the desired destination and 
+        g.Dijkstra(0, cost, parents); // One Source to All Nodes
+        // You should print the full path from the source to the desired destination and
         // not only the node used to reach that destination.
 
         sc.close();
@@ -137,35 +168,34 @@ public class Graph {
 // 0 1 2
 // 3 5 2
 
-
 // The solution for the Graph present in graph.txt file is
-// From    To   Cost  Parent
-//  0      0     0      0
-//  0      1     3      0
-//  0      2     8      0
-//  0      3     4      1
-//  0      4     1      0
+// From To Cost Parent
+// 0 0 0 0
+// 0 1 3 0
+// 0 2 8 0
+// 0 3 4 1
+// 0 4 1 0
 
-//  1      0     3      3
-//  1      1     0      1
-//  1      2     11     0
-//  1      3     1      1
-//  1      4     4      0
+// 1 0 3 3
+// 1 1 0 1
+// 1 2 11 0
+// 1 3 1 1
+// 1 4 4 0
 
-//  2      0     7      3
-//  2      1     4      2
-//  2      2     0      2
-//  2      3     5      2
-//  2      4     8      0
+// 2 0 7 3
+// 2 1 4 2
+// 2 2 0 2
+// 2 3 5 2
+// 2 4 8 0
 
-//  3      0     2      3
-//  3      1     5      0
-//  3      2     10     0
-//  3      3     0      3
-//  3      4     3      0
+// 3 0 2 3
+// 3 1 5 0
+// 3 2 10 0
+// 3 3 0 3
+// 3 4 3 0
 
-//  4      0     8      3
-//  4      1     11     0
-//  4      2     16     0
-//  4      3     6      4
-//  4      4     0      4
+// 4 0 8 3
+// 4 1 11 0
+// 4 2 16 0
+// 4 3 6 4
+// 4 4 0 4
