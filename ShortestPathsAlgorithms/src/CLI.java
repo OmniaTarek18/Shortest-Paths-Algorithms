@@ -86,7 +86,7 @@ public class CLI {
 
 			graph.FloydWarshall(cost, parents);
 
-			subMenu(src, cost[src], parents[src]); // need to be edited later
+			subMenu(src, cost, parents); // need to be edited later
 		}
 	}
 
@@ -103,16 +103,16 @@ public class CLI {
 			for (int i = 0; i < graph.Size(); i++) {
 				graph.Dijkstra(i, cost[i], parents[i]);
 			}
+			subMenu(cost, parents, false);
 		} else if (algOption == 2) {
 			for (int i = 0; i < graph.Size(); i++) {
 				graph.BellmanFord(i, cost[i], parents[i]);
 			}
+			subMenu(cost, parents, false);
 		} else if (algOption == 3) {
 			graph.FloydWarshall(cost, parents);
+			subMenu(cost, parents, true);
 		}
-
-		subMenu(cost, parents);
-
 	}
 
 	// sub menu
@@ -151,7 +151,26 @@ public class CLI {
 		}
 	}
 
-	static void subMenu(int[][] cost, int[][] parents) {
+	// For floyd-warshall algorithm
+	static void subMenu(int src, int[][] cost, int[][] parents) {
+		boolean exitSubMenu = false;
+		while (!exitSubMenu) {
+			int subOption = getSubMenuOption(1);
+			if (subOption == 3) {
+				exitSubMenu = true;
+			} else {
+				System.out.print("Please, Enter the destination: ");
+				int dest = sc.nextInt();
+
+				if (subOption == 1)
+					getCost(src, dest, cost[src]);
+				else if (subOption == 2)
+					getPath(src, dest, parents);
+			}
+		}
+	}
+
+	static void subMenu(int[][] cost, int[][] parents, boolean isFloydWarshall) {
 		boolean exitSubMenu = false;
 		while (!exitSubMenu) {
 			int subOption = getSubMenuOption(2);
@@ -165,10 +184,27 @@ public class CLI {
 
 				if (subOption == 1)
 					getCost(src, dest, cost[src]);
-				else if (subOption == 2)
+				else if (!isFloydWarshall && subOption == 2)
 					getPath(src, dest, parents[src]);
+				else if (isFloydWarshall && subOption == 2)
+					getPath(src, dest, parents);
 			}
 		}
+	}
+
+	// For floyd-warshall algorithm
+	static void getPath(int src, int dest, int[][] predecessors) {
+		var graph = new Graph();
+		ArrayList<Integer> path = graph.path(src, dest, predecessors);
+		if (path == null) {
+			System.out.println("No path found from node " + src + " to node " + dest + ".");
+			return;
+		}
+		System.out.println("Path from node " + src + " to node " + dest + " :");
+		for (int i = 0; i < path.size() - 1; i++) {
+			System.out.print(path.get(i) + " --> ");
+		}
+		System.out.println(path.get(path.size() - 1));
 	}
 
 	static void getPath(int src, int dest, int[] parents) {
@@ -182,7 +218,8 @@ public class CLI {
 			nodes.add(Integer.toString(temp));
 			temp = parents[temp];
 		}
-		if(temp != src) return;
+		if (temp != src)
+			return;
 		nodes.add(Integer.toString(temp));
 		Collections.reverse(nodes);
 		String finalPath = String.join(" --> ", nodes);
