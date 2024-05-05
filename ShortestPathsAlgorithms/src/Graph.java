@@ -112,15 +112,66 @@ public class Graph {
 
     }
 
-    public boolean FloydWarshall(int[][] cost, int[][] parents) {
+    public boolean FloydWarshall(int[][] cost, int[][] predecessors) {
+
+        int nodes = graph.size();
+
+        // Initialize the cost matrix
+        for (int i = 0; i < nodes; i++) {
+            for (int j = 0; j < nodes; j++) {
+                if (i == j)
+                    cost[i][j] = 0;
+                else cost[i][j] = Integer.MAX_VALUE / 2; // To avoid overflow when adding two inf
+            }
+            if(!graph.get(i).isEmpty()){
+                for(int [] edge: graph.get(i)){
+                    cost[i][edge[0]] = edge[1];
+                 }
+            }
+        }
+
+        // Initialize the predecessors matrix
+        for(int i = 0; i < nodes; i++){
+            for(int j = 0; j < nodes; j++){
+                if(cost[i][j] == Integer.MAX_VALUE / 2){
+                    predecessors[i][j] = -1;
+                }
+                else predecessors[i][j] = j;  // Source is i and next is j
+            }
+        }
+
+        // Apply floyd-warshall algorithm
+        for (int k = 0; k < nodes; k++) {
+            for (int i = 0; i < nodes; i++) {
+                for (int j = 0; j < nodes; j++) {
+                    if(cost[i][j]  > cost[i][k] + cost[k][j]){
+                        cost[i][j]  = cost[i][k] + cost[k][j];
+                        predecessors[i][j] = predecessors[i][k];
+                    }
+                }
+            }
+        }
 
         // check -ve cycles
-        for (int i = 0; i < graph.size(); i++) {
+        for (int i = 0; i < nodes; i++) {
             if (cost[i][i] < 0)
                 return false;
         }
+        
         return true;
 
+    }
+
+    // To get the shortest path of floyd-warshall
+    ArrayList<Integer> path(int start, int end, int [][]predecessors){
+        ArrayList<Integer> path = new ArrayList<>();
+        for(int i = start; i != end; i = predecessors[i][end]){
+            if(i == -1) return null;
+            path.add(i);
+        }
+        if(predecessors[end][end] == -1) return null;
+        else path.add(end);
+        return path;
     }
 
     // NOTE: The main function is used only for testing what I coded.
