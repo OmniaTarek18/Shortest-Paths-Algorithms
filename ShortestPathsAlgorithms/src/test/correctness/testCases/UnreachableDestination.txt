@@ -1,6 +1,3 @@
-5 4
-0 1 1
-1 2 2
-2 3 3
-3 4 4
-// path from 4 to1 : unreachable
+version https://git-lfs.github.com/spec/v1
+oid sha256:0b1a6c766ba8e4d53d3bb6ca34fac21113c6f6016422dfd5c2c06bba81a339f2
+size 65
