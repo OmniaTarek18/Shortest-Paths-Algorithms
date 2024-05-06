@@ -1,6 +1,5 @@
 *.txt filter=lfs diff=lfs merge=lfs -text
 *.psd filter=lfs diff=lfs merge=lfs -text
-*.java filter=lfs diff=lfs merge=lfs -text
 MediumDenseBellman.txt filter=lfs diff=lfs merge=lfs -text
 MediumDenseD.txt filter=lfs diff=lfs merge=lfs -text
 MediumDenseFloyd.txt filter=lfs diff=lfs merge=lfs -text
