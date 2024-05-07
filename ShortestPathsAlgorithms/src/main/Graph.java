@@ -89,6 +89,8 @@ public class Graph {
     public boolean BellmanFord(int src, int[] cost, int[] parents) {
         Arrays.fill(cost, Integer.MAX_VALUE);
         cost[src] = 0;
+        int[] temp = new int[n];
+        copy(temp,cost);
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n; j++) {
 
@@ -101,6 +103,7 @@ public class Graph {
                     }
                 }
             }
+            copy(cost,temp);
         }
         // check negative cycles
         for (int j = 0; j < n; j++) {
@@ -198,33 +201,10 @@ public class Graph {
         return path;
     }
 
-    // NOTE: The main function is used only for testing what I coded.
-    // Feel free to delete and create a new class to create the menu and put the
-    // main in it.
-    public static void main(String[] argv) {
-
-        Scanner sc = new Scanner(System.in);
-        System.out.print("\nPlease enter the file path: ");
-        String filePath = sc.nextLine();
-
-        // reform the path and add double slash
-        String[] path = filePath.split("\"");
-        filePath = String.join("\\", path);
-
-        Graph g = new Graph(filePath);
-
-        // That's a sample of how dijkstra code runs.
-        // NOTE: If the cost = Integer.MAX_VALUE, then this means that this node can't
-        // be accessed.
-        // NOTE: If the source and destination nodes are the same, then the parent node
-        // equals any of them.
-        int[] cost = new int[g.Size()];
-        int[] parents = new int[g.Size()];
-        g.Dijkstra(0, cost, parents); // One Source to All Nodes
-        // You should print the full path from the source to the desired destination and
-        // not only the node used to reach that destination.
-
-        sc.close();
+    private void copy(int[] arr1 , int arr2[]) {
+    	for(int i=0 ; i< n ; i++) {
+    		arr1[i]=arr2[i];
+    	}
     }
 }
 
