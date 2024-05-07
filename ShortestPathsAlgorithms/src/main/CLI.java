@@ -215,6 +215,10 @@ public class CLI {
 				System.out.println("No path found from node " + src + " to node " + dest + ".");
 				break;
 			}
+			if(nodes.contains(Integer.toString(temp))) {
+				System.out.println("A negative cycle is found which leads to infinite loop.");
+				break;
+			}
 			nodes.add(Integer.toString(temp));
 			temp = parents[temp];
 		}
