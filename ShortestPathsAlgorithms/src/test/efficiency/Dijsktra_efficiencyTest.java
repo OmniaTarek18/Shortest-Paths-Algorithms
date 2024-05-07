@@ -10,7 +10,7 @@ import main.Graph;
 
 public class Dijsktra_efficiencyTest {
     int[] graphSizes = { 10, 50, 100, 300, 500, 700, 1000, 3000, 5000, 7000, 10000 };
-    double[] densities = { 0.2, 0.4, 0.5, 0.03, 0.03, 0.02, 0.01, 0.002, 0.0009, 0.0002, 0.0001 }; // density for each size
+    double[] densities = { 0.2, 0.4, 0.5, 0.03, 0.03, 0.002, 0.001, 0.00002, 0.000002, 0.000002, 0.000001 }; // density for each size
     int count = 5; // number of runs to calc meantime
     int numSources = 5; // no of source nodes 
     Random random = new Random();

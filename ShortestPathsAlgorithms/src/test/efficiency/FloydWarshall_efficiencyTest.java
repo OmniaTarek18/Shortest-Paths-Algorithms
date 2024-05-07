@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class FloydWarshall_efficiencyTest {
     int[] graphSizes = { 10, 50, 100, 300, 500, 700, 1000, 3000, 5000, 7000, 10000 };
-    double[] densities = { 0.2, 0.4, 0.5, 0.03, 0.03, 0.02, 0.01, 0.002, 0.0009, 0.0002, 0.0001 }; // density for each size
+    double[] densities = { 0.8, 0.6, 0.5, 0.06, 0.06, 0.004, 0.002, 0.00004, 0.000004, 0.000004, 0.000002 }; // density for each size
     int count = 5; // number of runs to calc meantime
 
     Random random = new Random();

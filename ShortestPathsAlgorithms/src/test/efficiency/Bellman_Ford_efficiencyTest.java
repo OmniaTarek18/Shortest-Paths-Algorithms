@@ -13,7 +13,7 @@ public class Bellman_Ford_efficiencyTest {
     Random random = new Random();
     int numSources = 5; // no of source nodes 
     int[] graphSizes = { 10, 50, 100, 300, 500, 700, 1000, 3000, 5000, 7000, 10000 };
-    double[] densities = { 0.2, 0.4, 0.5, 0.03, 0.03, 0.02, 0.01, 0.002, 0.0009, 0.0002, 0.0001 }; // density for each size
+    double[] densities = { 0.8, 0.6, 0.5, 0.06, 0.06, 0.004, 0.002, 0.00004, 0.000004, 0.000004, 0.000002 }; // density for each size
 
     @Test
     public void Bellman_Ford_efficiency() throws IOException {
