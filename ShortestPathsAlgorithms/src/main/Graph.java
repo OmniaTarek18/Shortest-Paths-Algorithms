@@ -97,9 +97,9 @@ public class Graph {
                 if (cost[j] == Integer.MAX_VALUE)
                     continue;
                 for (int[] edge : graph.get(j)) {
-                    if (cost[edge[0]] > cost[j] + edge[1]) {
+                    if (temp[edge[0]] > cost[j] + edge[1]) {
                         parents[edge[0]] = j;
-                        cost[edge[0]] = cost[j] + edge[1];
+                        temp[edge[0]] = cost[j] + edge[1];
                     }
                 }
             }
