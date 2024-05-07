@@ -1,4 +1,5 @@
 package main;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,10 +9,17 @@ import java.util.Scanner;
 public class CLI {
 	Graph graph;
 	static Scanner sc = new Scanner(System.in);
+	public static final String RESET = "\u001B[0m";
+	public static final String BLUE = "\u001B[35m";
+	public static final String GREEN = "\u001B[32m";
+	public static final String CYAN = "\u001B[36m";
+	public static final String YELLOW = "\u001B[33m";
+	public static final String BLUE_BG = "\u001B[45m";
+	public static final String CYAN_BG = "\u001B[46m";
 
 	// get file from user and initialize the graph
 	public void initializeGraph() {
-		System.out.println("Please, Enter file path: ");
+		System.out.println(BLUE + "Please, Enter file path: " + RESET);
 		String filePath = sc.nextLine();
 
 		// handle path with double quote.
@@ -22,16 +30,16 @@ public class CLI {
 	}
 
 	public int getMainMenuOption() {
-		System.out.println("MAIN MENU: ");
+		System.out.println("\n" + BLUE_BG + "MAIN MENU: " + RESET);
 		System.out.println("\t1. Find the shortest paths from source node to all other nodes.");
 		System.out.println("\t2. Find the shortest paths between all the pairs of nodes.");
 		System.out.println("\t3. Check if the graph contains a negative cycle.");
 		System.out.println("\t4. Exit.");
-		System.out.print("Please, Enter the option you want: ");
+		System.out.print(BLUE + "Enter the option you want: " + RESET);
 
 		int mainOption = sc.nextInt();
 		while (4 < mainOption || mainOption < 1) {
-			System.out.print("Please, Enter Valid Option: ");
+			System.out.print(YELLOW + "Please, Enter Valid Option: " + RESET);
 			mainOption = sc.nextInt();
 		}
 		return mainOption;
@@ -39,25 +47,25 @@ public class CLI {
 
 	public int getAlgorithmOption(int mainOption) {
 		int num = 1;
-		System.out.println("\nAlgorithms: ");
+		System.out.println("\n" + BLUE_BG + "Algorithms: " + RESET);
 		if (mainOption != 3)
 			System.out.println("\t" + num++ + ". Dijkstra Algorithm");
 		System.out.println("\t" + num++ + ". Bellman-Ford Algorithm");
 		System.out.println("\t" + num++ + ". Floyd-Warshall Algorithm");
-		System.out.print("Please, Enter the Algorithm you want: ");
+		System.out.print(BLUE + "Enter the Algorithm you want: " + RESET);
 		int algOption = sc.nextInt();
 		while (1 > algOption || algOption > num) {
-			System.out.print("Please, Enter Valid Option: ");
+			System.out.print(YELLOW + "Please, Enter Valid Option: " + RESET);
 			algOption = sc.nextInt();
 		}
 		return algOption;
 	}
 
 	public int getSource() {
-		System.out.print("Please, Enter the source: ");
+		System.out.print(BLUE + "Please, Enter the source: " + RESET);
 		int src = sc.nextInt();
 		while (src >= graph.Size() || src < 0) {
-			System.out.print("Please, Enter Valid Source: ");
+			System.out.print(YELLOW + "Please, Enter Valid Source: " + RESET);
 			src = sc.nextInt();
 		}
 		return src;
@@ -119,15 +127,15 @@ public class CLI {
 	// we need to specifiy the option of main menu (option 1 or 2 in MM)
 	static int getSubMenuOption(int option) {
 		String sub = option == 1 ? "to specific node." : "from specific node to another one.";
-		System.out.println("\nSUB-MENU");
+		System.out.println("\n" + CYAN_BG + "SUB-MENU: " + RESET);
 		System.out.println("\t1. Get cost " + sub);
 		System.out.println("\t2. Get path " + sub);
 		System.out.println("\t3. Get back to Main Menu.");
-		System.out.print("Please, Enter the option you want: ");
+		System.out.print(CYAN + "Enter the option you want: " + RESET);
 		int subOption = sc.nextInt();
 
 		while (3 < subOption || subOption < 1) {
-			System.out.print("Please, Enter Valid Option: ");
+			System.out.print(YELLOW + "Please, Enter Valid Option: " + RESET);
 			subOption = sc.nextInt();
 		}
 		return subOption;
@@ -140,7 +148,7 @@ public class CLI {
 			if (subOption == 3) {
 				exitSubMenu = true;
 			} else {
-				System.out.print("Please, Enter the destination: ");
+				System.out.print(CYAN + "Enter the destination: " + RESET);
 				int dest = sc.nextInt();
 
 				if (subOption == 1)
@@ -159,7 +167,7 @@ public class CLI {
 			if (subOption == 3) {
 				exitSubMenu = true;
 			} else {
-				System.out.print("Please, Enter the destination: ");
+				System.out.print(CYAN + "Enter the destination: " + RESET);
 				int dest = sc.nextInt();
 
 				if (subOption == 1)
@@ -177,9 +185,9 @@ public class CLI {
 			if (subOption == 3) {
 				exitSubMenu = true;
 			} else {
-				System.out.print("Please, Enter the source: ");
+				System.out.print(CYAN + "Enter the source: " + RESET);
 				int src = sc.nextInt();
-				System.out.print("Please, Enter the destination: ");
+				System.out.print(CYAN + "Enter the destination: " + RESET);
 				int dest = sc.nextInt();
 
 				if (subOption == 1)
@@ -197,10 +205,10 @@ public class CLI {
 		var graph = new Graph();
 		ArrayList<Integer> path = graph.path(src, dest, predecessors);
 		if (path == null) {
-			System.out.println("No path found from node " + src + " to node " + dest + ".");
+			System.out.println("\n" + YELLOW + "No path found from node " + src + " to node " + dest + "." + RESET);
 			return;
 		}
-		System.out.println("Path from node " + src + " to node " + dest + " :");
+		System.out.println("\n" + GREEN + "Path from node " + src + " to node " + dest + " :" + RESET);
 		for (int i = 0; i < path.size() - 1; i++) {
 			System.out.print(path.get(i) + " --> ");
 		}
@@ -212,11 +220,11 @@ public class CLI {
 		int temp = dest;
 		while (temp != src) {
 			if (parents[temp] == -1) {
-				System.out.println("No path found from node " + src + " to node " + dest + ".");
+				System.out.println("\n" + YELLOW + "No path found from node " + src + " to node " + dest + "." + RESET);
 				break;
 			}
-			if(nodes.contains(Integer.toString(temp))) {
-				System.out.println("A negative cycle is found which leads to infinite loop.");
+			if (nodes.contains(Integer.toString(temp))) {
+				System.out.println("\n" + YELLOW + "A negative cycle is found which leads to infinite loop." + RESET);
 				break;
 			}
 			nodes.add(Integer.toString(temp));
@@ -227,12 +235,16 @@ public class CLI {
 		nodes.add(Integer.toString(temp));
 		Collections.reverse(nodes);
 		String finalPath = String.join(" --> ", nodes);
-		System.out.println("Path from node " + src + " to node " + dest + " :");
+		System.out.println("\n" + GREEN + "Path from node " + src + " to node " + dest + " :" + RESET);
 		System.out.println(finalPath);
 	}
 
 	static void getCost(int src, int dest, int[] cost) {
-		System.out.println("The cost of the path from node " + src + " to node " + dest + " = " + cost[dest]);
+		if (cost[dest] == Integer.MAX_VALUE || cost[dest] == Integer.MAX_VALUE / 2)
+			System.out.println("\n" + YELLOW + "No path from node " + src + " to node " + dest + "." + RESET);
+		else
+			System.out.println("\n" +
+					GREEN + "The cost of the path from node " + src + " to node " + dest + " = " + RESET + cost[dest]);
 	}
 
 	// 3. check if the graph contains a negative cycle .
@@ -248,9 +260,9 @@ public class CLI {
 			value = graph.FloydWarshall(cost, parents);
 		}
 		if (value)
-			System.out.println("No negative cycles");
+			System.out.println("\n" + GREEN + "No negative cycles" + RESET);
 		else if (!value)
-			System.out.println("A negative cycle is found");
+			System.out.println("\n" + YELLOW + "A negative cycle is found" + RESET);
 	}
 
 	// using bellmand-ford algorithm .
